@@ -1,18 +1,43 @@
 """https://leetcode.com/problems/merge-sorted-array/?envType=study-plan&id=data-structure-i"""
 
 
-from bisect import insort
+from typing import Optional
+
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 class Solution:
-    def merge(self, nums1: list[int], m: int, nums2: list[int], n: int) -> None:
-        nums1[:] = nums1[:m]
-        for inserted_item in nums2[:n]:
-            insort(nums1, inserted_item)
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        result = current = ListNode()
+
+        while list1 and list2:
+            if list1.val < list2.val:
+                current.next = list1
+                current = list1
+                list1 = list1.next
+            else:
+                current.next = list2
+                current = list2
+                list2 = list2.next
+
+        if list1 or list2:
+            current.next = list1 if list1 else list2
+        return result.next
 
 
-s = Solution()
-test1 = [1, 2, 3, 0, 0, 0]
-test2 = [4, 0, 1, 0]
-s.merge(test1, 3, test2, 4)
-print(test1)
+if __name__ == '__main__':
+    s = Solution()
+    list1 = ListNode(-9, ListNode(3))
+    list2 = ListNode(5, ListNode(7, ListNode(10, ListNode(14))))
+
+    res = s.mergeTwoLists(list1, list2)
+    while res:
+        print(res.val, end=', ')
+        res = res.next
+    # print(res.val)
+
